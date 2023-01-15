@@ -1,14 +1,35 @@
 services:
+  traefik:
+    image: traefik:latest
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--accesslog=true"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
   postgres:
     image: postgres
-    container_name: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_USER} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./data/prod/postgres:/var/lib/postgresql/data
     env_file:
       - .env
   rabbitmq:
     image: rabbitmq:management
-    container_name: rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "8081:15672"
     volumes:
@@ -17,15 +38,41 @@ services:
       - .env
   generator:
     build:
-      dockerfile: generator/Dockerfile
+      context: generator/
     env_file:
       - .env
     environment:
       - RABBIT_URL=amqp://rabbit:rabbit@rabbitmq:5672/
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   evaluation:
     build:
-      dockerfile: evaluation/Dockerfile
+      context: evaluation/
     env_file:
       - .env
     environment:
       - POSTGRES_HOST=postgres
+      - RABBIT_URL=amqp://rabbit:rabbit@rabbitmq:5672/
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.evaluation-api.rule=Host(`localhost`) && PathPrefix(`/api`)
+      - traefik.http.routers.evaluation-api.entrypoints=web
+      - traefik.http.routers.evaluation-playground.rule=Host(`localhost`) && PathPrefix(`/playground`)
+      - traefik.http.routers.evaluation-playground.entrypoints=web
+  frontend:
+    build:
+      context: frontend/
+      args:
+        - API_URL=http://localhost/api
+    depends_on:
+      - evaluation
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`localhost`) && PathPrefix(`/`)
+      - traefik.http.routers.frontend.entrypoints=web

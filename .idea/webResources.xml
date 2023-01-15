@@ -7,6 +7,7 @@
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/evaluation" />
             <path value="file://$PROJECT_DIR$/generator" />
+            <path value="file://$PROJECT_DIR$/frontend" />
           </resourceRoots>
         </entryData>
       </entry>

@@ -28,7 +28,7 @@ func main() {
 	datapointService.ReceiveDatapoint(datapointEvents.ReceiveDatapoints())
 
 	mux := http.NewServeMux()
-	mux.Handle("/", playground.Handler("GraphQL playground", "/api"))
+	mux.Handle("/playground", playground.Handler("GraphQL playground", "/api"))
 	mux.Handle("/api", handler.NewDefaultServer(
 		graphql.NewExecutableSchema(
 			graphql.Config{
