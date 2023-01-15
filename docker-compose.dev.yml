@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/dev/postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "8081:15672"
+    volumes:
+      - ./data/dev/rabbitmq:/var/lib/rabbitmq
+    env_file:
+      - .env
