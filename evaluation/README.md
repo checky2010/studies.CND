@@ -6,6 +6,7 @@ Receives datapoints from a queue and stores them in a database. Also allows for 
 
 | ENV                 | Default | Optional | Description                                                                    |
 |:--------------------|:--------|----------|:-------------------------------------------------------------------------------|
+| `PORT`              | _8080_  | Yes      | The port on which the service listens.                                         |
 | `RABBIT_URL`        | _-_     | No       | The URL to access RabbitMQ in the format `amqp://username:password@url:5672/`. |
 | `RABBIT_QUEUE`      | _-_     | No       | The name of the queue from which the datapoints will be received.              |
 | `POSTGRES_HOST`     | _-_     | No       | The host under which Postgres is reachable.                                    |

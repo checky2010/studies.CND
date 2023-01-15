@@ -90,16 +90,25 @@ func (repository *DatapointRepositoryImpl) Save(datapoint *model.Datapoint) {
 		Date:  datapoint.Date,
 	}
 
-	repository.DB.Save(datapointEntity)
+	repository.DB.Save(&datapointEntity)
 }
 
-func (repository *DatapointRepositoryImpl) FindForTime(start time.Time, end time.Time) []*model.Datapoint {
+func (repository *DatapointRepositoryImpl) FindForTime(start, end *time.Time) []*model.Datapoint {
+	if start == nil {
+		startValue := time.Date(1, 1, 1, 1, 1, 1, 1, time.UTC)
+		start = &startValue
+	}
+	if end == nil {
+		endValue := time.Now()
+		end = &endValue
+	}
+
 	var datapointEntities []*entities.Datapoint
 	repository.DB.Where("date BETWEEN ? AND ?", start, end).Find(&datapointEntities)
 
 	datapoints := make([]*model.Datapoint, len(datapointEntities))
-	for _, entity := range datapointEntities {
-		datapoints = append(datapoints, entity.ToDatapoint())
+	for i, entity := range datapointEntities {
+		datapoints[i] = entity.ToDatapoint()
 	}
 
 	return datapoints

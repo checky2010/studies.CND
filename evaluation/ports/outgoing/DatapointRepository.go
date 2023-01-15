@@ -6,6 +6,6 @@ import (
 )
 
 type DatapointRepository interface {
-	FindForTime(start time.Time, end time.Time) []*model.Datapoint
+	FindForTime(start, end *time.Time) []*model.Datapoint
 	Save(datapoint *model.Datapoint)
 }

@@ -1,4 +1,4 @@
-package incoming
+package ingoing
 
 import "evaluation/domain/model"
 

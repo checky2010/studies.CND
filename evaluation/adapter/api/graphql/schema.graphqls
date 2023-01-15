@@ -1,0 +1,17 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Datapoint {
+  value: Int!
+  date: Time!
+}
+
+type Query {
+  datapoints(start: Time, end: Time): [Datapoint!]!
+  averageValue(start: Time, end: Time): Float!
+  maxDatapoint(start: Time, end: Time): Datapoint!
+  minDatapoint(start: Time, end: Time): Datapoint!
+}
+
+scalar Time

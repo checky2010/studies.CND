@@ -22,6 +22,6 @@ func (service *DatapointServiceImpl) AddDatapoint(datapoint *model.Datapoint) {
 	service.DatapointRepository.Save(datapoint)
 }
 
-func (service *DatapointServiceImpl) GetDatapointsForTime(start time.Time, end time.Time) []*model.Datapoint {
+func (service *DatapointServiceImpl) GetDatapointsForTime(start, end *time.Time) []*model.Datapoint {
 	return service.DatapointRepository.FindForTime(start, end)
 }

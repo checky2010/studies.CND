@@ -1,7 +1,14 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="go build generator" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
-    <module name="data" />
+    <module name="studies.CND" />
     <working_directory value="$PROJECT_DIR$/generator" />
+    <envs>
+      <env name="MAX_VALUE" value="100" />
+      <env name="MIN_VALUE" value="0" />
+      <env name="RABBIT_QUEUE" value="DatapointGenerator" />
+      <env name="RABBIT_URL" value="amqp://rabbit:rabbit@localhost:5672/" />
+      <env name="STEP" value="5" />
+    </envs>
     <EXTENSION ID="net.ashald.envfile">
       <option name="IS_ENABLED" value="true" />
       <option name="IS_SUBST" value="false" />

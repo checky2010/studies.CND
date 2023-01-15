@@ -8,5 +8,5 @@ import (
 type DatapointService interface {
 	ReceiveDatapoint(datapointChannel <-chan *model.Datapoint)
 	AddDatapoint(datapoint *model.Datapoint)
-	GetDatapointsForTime(start time.Time, end time.Time) []*model.Datapoint
+	GetDatapointsForTime(start, end *time.Time) []*model.Datapoint
 }
