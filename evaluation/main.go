@@ -11,6 +11,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -26,8 +27,9 @@ func main() {
 
 	datapointService.ReceiveDatapoint(datapointEvents.ReceiveDatapoints())
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/api"))
-	http.Handle("/api", handler.NewDefaultServer(
+	mux := http.NewServeMux()
+	mux.Handle("/", playground.Handler("GraphQL playground", "/api"))
+	mux.Handle("/api", handler.NewDefaultServer(
 		graphql.NewExecutableSchema(
 			graphql.Config{
 				Resolvers: &graphql.Resolver{
@@ -45,5 +47,6 @@ func main() {
 		port = "8080"
 	}
 
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	h := cors.AllowAll().Handler(mux)
+	log.Fatal(http.ListenAndServe(":"+port, h))
 }
