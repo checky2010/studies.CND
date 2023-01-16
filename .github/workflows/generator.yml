@@ -1,5 +1,10 @@
 name: Generator
 
+on:
+  push:
+  release:
+    types: [published]
+
 env:
   REGISTRY: ghcr.io
   SERVICE: generator
