@@ -1,10 +1,5 @@
 name: Evaluation
 
-on:
-  push:
-  release:
-    types: [published]
-
 env:
   REGISTRY: ghcr.io
   SERVICE: evaluation
