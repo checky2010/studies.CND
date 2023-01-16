@@ -68,7 +68,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ${{GITHUB_WORKSPACE}}/${{env.SERVICE}}
+          context: ${{vars.GITHUB_WORKSPACE}}/${{env.SERVICE}}
           file: Dockerfile
           push: true
           tags: ${{steps.meta.outputs.tags}}
