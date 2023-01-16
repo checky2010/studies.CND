@@ -42,7 +42,7 @@ services:
     env_file:
       - .env
     environment:
-      - RABBIT_URL=amqp://rabbit:rabbit@rabbitmq:5672/
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -53,7 +53,7 @@ services:
       - .env
     environment:
       - POSTGRES_HOST=postgres
-      - RABBIT_URL=amqp://rabbit:rabbit@rabbitmq:5672/
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       rabbitmq:
         condition: service_healthy

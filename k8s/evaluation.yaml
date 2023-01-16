@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: evaluation
+  name: evaluation
+  namespace: dataluation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evaluation
+  template:
+    metadata:
+      labels:
+        app: evaluation
+    spec:
+      containers:
+        - name: evaluation
+          image: asd # TODO
+          imagePullPolicy: Always
+          env:
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: USERNAME
+                  name: rabbitmq-user
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: rabbitmq-user
+            - name: RABBITMQ_HOST
+              value: rabbitmq.dataluation.svc.cluster.local
+            - name: RABBITMQ_QUEUE
+              value: DatapointGenerator
+            - name: POSTGRES_HOST
+              value: postgres.dataluation.svc.cluster.local
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: USERNAME
+                  name: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: postgres-user
+            - name: POSTGRES_DATABASE
+              value: evaluation
+      restartPolicy: Always

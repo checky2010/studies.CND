@@ -1,6 +1,7 @@
 package rabbitmq
 
 import (
+	"fmt"
 	"os"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -11,7 +12,12 @@ type ServiceImpl struct {
 }
 
 func NewServiceImpl() Service {
-	connection, err := amqp.Dial(os.Getenv("RABBIT_URL"))
+	connection, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
+		os.Getenv("RABBITMQ_USER"),
+		os.Getenv("RABBITMQ_PASSWORD"),
+		os.Getenv("RABBITMQ_HOST"),
+		getEnv("RABBITMQ_PORT", "5672"),
+	))
 	if err != nil {
 		panic("Can't connect to RabbitMQ")
 	}
@@ -22,7 +28,7 @@ func NewServiceImpl() Service {
 	}
 
 	_, err = channel.QueueDeclare(
-		os.Getenv("RABBIT_QUEUE"),
+		os.Getenv("RABBITMQ_QUEUE"),
 		false,
 		true,
 		false,
@@ -40,7 +46,7 @@ func NewServiceImpl() Service {
 
 func (service *ServiceImpl) Receive() <-chan amqp.Delivery {
 	events, err := service.Channel.Consume(
-		os.Getenv("RABBIT_QUEUE"),
+		os.Getenv("RABBITMQ_QUEUE"),
 		"",
 		true,
 		false,
@@ -53,4 +59,11 @@ func (service *ServiceImpl) Receive() <-chan amqp.Delivery {
 	}
 
 	return events
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }

@@ -31,8 +31,8 @@ docker run -d \
 
 Build:
 ```shell
-cd ./generator
-docker build -t generator .
+cd ./generator.yaml
+docker build -t generator.yaml .
 cd ..
 ```
 
@@ -40,7 +40,7 @@ Start (depends on [rabbitmq](#rabbitmq)):
 ```shell
 docker run -d \
   --env-file .env \
-  generator
+  generator.yaml
 ```
 
 ### Evaluation
@@ -97,3 +97,18 @@ docker compose up
 After starting the compose file, the frontend is accessible at [http://localhost](http://localhost) and the GraphQL Playground at [http://localhost/playground](http://localhost/playground).
 
 The Docker Compose also contains [traefik](https://traefik.io/traefik/) as a Load-Balancer. All containers can be scaled at will without problems.
+
+## Kubernetes
+Installing Traefik Ingress Controller:
+```shell
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm install traefik traefik/traefik
+```
+
+Applying the manifest files:
+```shell
+kubectl apply -f k8s/
+```
+
+For easier access, it is advised to use [Octant](https://github.com/vmware-tanzu/octant) for navigating the cluster. 

@@ -46,7 +46,7 @@ func main() {
 		err = channel.PublishWithContext(
 			context.Background(),
 			"",
-			os.Getenv("RABBIT_QUEUE"),
+			os.Getenv("RABBITMQ_QUEUE"),
 			false,
 			false,
 			amqp.Publishing{
@@ -69,7 +69,12 @@ func main() {
 }
 
 func getRabbitChannel() *amqp.Channel {
-	connection, err := amqp.Dial(os.Getenv("RABBIT_URL"))
+	connection, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
+		os.Getenv("RABBITMQ_USER"),
+		os.Getenv("RABBITMQ_PASSWORD"),
+		os.Getenv("RABBITMQ_HOST"),
+		getEnv("RABBITMQ_PORT", "5672"),
+	))
 	if err != nil {
 		panic("Can't connect to RabbitMQ")
 	}
@@ -80,7 +85,7 @@ func getRabbitChannel() *amqp.Channel {
 	}
 
 	_, err = channel.QueueDeclare(
-		os.Getenv("RABBIT_QUEUE"),
+		os.Getenv("RABBITMQ_QUEUE"),
 		false,
 		true,
 		false,
@@ -92,4 +97,11 @@ func getRabbitChannel() *amqp.Channel {
 	}
 
 	return channel
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }

@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: dataluation
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+            pathType: Prefix
+          - path: /api
+            backend:
+              service:
+                name: evaluation
+                port:
+                  number: 80
+            pathType: Prefix
+          - path: /playground
+            backend:
+              service:
+                name: evaluation
+                port:
+                  number: 80
+            pathType: Prefix
