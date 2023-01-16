@@ -1,6 +1,6 @@
 # Generator
 
-Generates random values between 0 and 100 and publishes them to a RabbitMQ queue.
+Generates random values between 0 and 100 and publishes them to a RabbitMQ queue. The values are always falling/climbing by less than 5 per step.
 
 ## Environment variables
 

@@ -1,16 +1,11 @@
-# frontend
+# Frontend
 
-An UI for CND
+An UI for displaying the data from [evaluation](../evaluation/README.md) and converting it to nice graphs.
 
-## Getting Started
+## Build args
 
-This project is a starting point for a Flutter application.
+Unfortunately, it isn't possible to use environment variables that can be changed at runtime. But Flutter allows for setting build arguments at compiletime. These can be set by adding `--dart-define=<ARG>=<VALUE>` to the build command.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| ARG       | Default                     | Optional | Description                                                                                |
+|:----------|:----------------------------|----------|:-------------------------------------------------------------------------------------------|
+| `API_URL` | _http://localhost:8080/api_ | Yes      | The URL that will be used for GraphQL requests. Must be accessible from the users browser. |
