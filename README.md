@@ -111,4 +111,10 @@ Applying the manifest files:
 kubectl apply -f k8s/
 ```
 
-For easier access, it is advised to use [Octant](https://github.com/vmware-tanzu/octant) for navigating the cluster. 
+For easier access, it is advised to use [Octant](https://github.com/vmware-tanzu/octant) for navigating the cluster.
+## CI
+Automated CI Scripts can be found in the folder [.github/workflows](.github/workflows/). They are split according to services in [generator](.github/workflows/generator.yml), [evaluation](.github/workflows/evaluation.yml), and [frontend](.github/workflows/frontend.yml).
+
+There are also a few tests that can be found throughout the code and which will be tested in the CI.
+
+The results of these Scripts can be found [here](https://github.com/checky2010/studies.CND/actions).

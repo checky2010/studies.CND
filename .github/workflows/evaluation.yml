@@ -1,0 +1,75 @@
+name: Generator
+
+on:
+  push:
+  release:
+    types: [published]
+
+env:
+  REGISTRY: ghcr.io
+  SERVICE: evaluation
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: go get
+        working-directory: ./${{env.SERVICE}}
+      - name: Run tests
+        run: go test ./...
+        working-directory: ./${{env.SERVICE}}
+  build:
+    name: Build service
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: go get
+        working-directory: ./${{env.SERVICE}}
+      - name: Run build
+        run: go build
+        working-directory: ./${{env.SERVICE}}
+  publish:
+    name: Publish container image
+    needs: [test, build]
+    if : github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to CR
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{env.REGISTRY}}/${{github.repository}}/${{env.SERVICE}}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{env.SERVICE}}
+          file: Dockerfile
+          push: true
+          tags: ${{steps.meta.outputs.tags}}
+          labels: ${{steps.meta.outputs.labels}}

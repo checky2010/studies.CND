@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go test generator" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+    <module name="studies.CND" />
+    <working_directory value="$PROJECT_DIR$/generator" />
+    <kind value="PACKAGE" />
+    <package value="generator" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <method v="2" />
+  </configuration>
+</component>
