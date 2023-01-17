@@ -8,7 +8,7 @@ import (
 )
 
 type DatapointEventsImpl struct {
-	Service Service
+	Service *Service
 }
 
 func (datapointEvents *DatapointEventsImpl) ReceiveDatapoints() <-chan *model.Datapoint {

@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: asd # TODO
+          image: ghcr.io/checky2010/studies.cnd/frontend:main
           imagePullPolicy: Always
       restartPolicy: Always

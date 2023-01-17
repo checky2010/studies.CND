@@ -4,6 +4,7 @@ metadata:
   name: evaluation
   labels:
     app: evaluation
+  namespace: dataluation
 spec:
   ports:
     - port: 80

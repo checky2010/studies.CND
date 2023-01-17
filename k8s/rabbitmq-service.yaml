@@ -4,6 +4,7 @@ metadata:
   name: rabbitmq
   labels:
     app: rabbitmq
+  namespace: dataluation
 spec:
   ports:
     - port: 5672

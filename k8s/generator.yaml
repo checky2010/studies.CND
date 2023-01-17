@@ -17,21 +17,21 @@ spec:
     spec:
       containers:
         - name: generator
-          image: asd # TODO
+          image: ghcr.io/checky2010/studies.cnd/generator:main
           imagePullPolicy: Always
           env:
             - name: RABBITMQ_USERNAME
               valueFrom:
                 secretKeyRef:
-                  key: USERNAME
+                  key: username
                   name: rabbitmq-user
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: PASSWORD
+                  key: password
                   name: rabbitmq-user
             - name: RABBITMQ_HOST
-              value: rabbitmq.dataluation.svc.cluster.local
+              value: rabbitmq
             - name: RABBITMQ_QUEUE
               value: DatapointGenerator
       restartPolicy: Always

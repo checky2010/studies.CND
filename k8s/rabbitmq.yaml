@@ -6,6 +6,7 @@ metadata:
   name: rabbitmq
   namespace: dataluation
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: rabbitmq
@@ -16,17 +17,17 @@ spec:
     spec:
       containers:
         - name: rabbitmq
-          image: rabbitmq:latest
+          image: rabbitmq:management
           env:
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
                 secretKeyRef:
-                  key: USERNAME
+                  key: username
                   name: rabbitmq-user
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
-                  key: PASSWORD
+                  key: password
                   name: rabbitmq-user
           volumeMounts:
             - mountPath: /var/lib/rabbitmq

@@ -4,6 +4,7 @@ metadata:
   name: rabbitmq-pv
   labels:
     type: local
+  namespace: dataluation
 spec:
   storageClassName: manual
   capacity:
@@ -11,7 +12,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/kubernetes/rabbitmq
+    path: /home/case/k8s/rabbitmq
   claimRef:
     name: rabbitmq-pvc
     namespace: dataluation

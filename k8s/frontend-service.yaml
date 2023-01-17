@@ -4,6 +4,7 @@ metadata:
   name: frontend
   labels:
     app: frontend
+  namespace: dataluation
 spec:
   ports:
     - port: 80

@@ -41,6 +41,8 @@ jobs:
         with:
           context: "{{defaultContext}}:${{env.SERVICE}}"
           file: Dockerfile
+          build-args: |
+            API_URL=http://localhost/api
           push: true
           tags: ${{steps.meta.outputs.tags}}
           labels: ${{steps.meta.outputs.labels}}
