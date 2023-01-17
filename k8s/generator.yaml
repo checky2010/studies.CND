@@ -20,7 +20,7 @@ spec:
           image: ghcr.io/checky2010/studies.cnd/generator:main
           imagePullPolicy: Always
           env:
-            - name: RABBITMQ_USERNAME
+            - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:
                   key: username
@@ -31,7 +31,7 @@ spec:
                   key: password
                   name: rabbitmq-user
             - name: RABBITMQ_HOST
-              value: rabbitmq
+              value: rabbitmq-service
             - name: RABBITMQ_QUEUE
               value: DatapointGenerator
       restartPolicy: Always
