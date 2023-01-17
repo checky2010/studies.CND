@@ -94,14 +94,21 @@ docker run -d \
 
 This compose file contains all necessary dependencies for the three services, so [RabbitMQ](#rabbitmq) and [Postgresql](#postgres). This file is mainly used for development purposes or for deploying the containers separately without worrying about those dependencies.
 
+There's also the option to build and start all containers locally. This docker compose file can be started with:
+```shell
+docker compose -f docker-compose.dev.full.yml up
+```
+
 ### Production
 
 [Docker Compose File](docker-compose.prod.yml)
 
 Start:
 ```shell
-docker compose -f docker-compose.prod.yml up
+sudo docker compose -f docker-compose.prod.yml up
 ```
+
+> Because of some issue with ghcr.io, sudo is required for pulling the images, even if the packages are public.
 
 After starting the compose file, the frontend is accessible at [http://localhost](http://localhost) and the GraphQL Playground at [http://localhost/playground](http://localhost/playground).
 
@@ -120,6 +127,11 @@ Change the `hostPath` variables in both [postgres-pv.yaml](k8s/postgres-pv.yaml)
 Applying the manifest files:
 ```shell
 kubectl apply -f k8s/
+```
+
+Deleting the manifest files:
+```shell
+kubectl delete -f k8s/
 ```
 
 For easier access, it is advised to use [Octant](https://github.com/vmware-tanzu/octant) for navigating the cluster.

@@ -76,7 +76,7 @@ func getRabbitChannel() *amqp.Channel {
 		getEnv("RABBITMQ_PORT", "5672"),
 	))
 	if err != nil {
-		panic("Can't connect to RabbitMQ")
+		panic("Can't connect to RabbitMQ: " + err.Error())
 	}
 
 	channel, err := connection.Channel()
