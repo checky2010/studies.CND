@@ -7,11 +7,11 @@ import (
 	"fmt"
 )
 
-type DatapointEventsImpl struct {
+type DatapointEventImpl struct {
 	Service *Service
 }
 
-func (datapointEvents *DatapointEventsImpl) ReceiveDatapoints() <-chan *model.Datapoint {
+func (datapointEvents *DatapointEventImpl) ReceiveDatapoints() <-chan *model.Datapoint {
 	datapointChannel := make(chan *model.Datapoint)
 
 	go func() {
@@ -19,7 +19,7 @@ func (datapointEvents *DatapointEventsImpl) ReceiveDatapoints() <-chan *model.Da
 			fmt.Print("Received event ")
 			fmt.Println(event)
 
-			var datapoint dto.Datapoint
+			var datapoint dto.NewDatapointEvent
 			err := json.Unmarshal(event.Body, &datapoint)
 			if err != nil {
 				panic("Error unmarshalling datapoint")

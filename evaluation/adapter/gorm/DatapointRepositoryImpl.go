@@ -3,6 +3,7 @@ package gorm
 import (
 	"evaluation/adapter/gorm/entities"
 	"evaluation/domain/model"
+	"evaluation/ports/outgoing"
 	"fmt"
 	"os"
 	"time"
@@ -16,7 +17,7 @@ type DatapointRepositoryImpl struct {
 	DB *gorm.DB
 }
 
-func NewDatapointRepositoryImpl() DatapointRepository {
+func NewDatapointRepositoryImpl() outgoing.DatapointRepository {
 	// Because GORM doesn't automatically create the database, it's done manually
 	createDatabase()
 
@@ -31,7 +32,7 @@ func NewDatapointRepositoryImpl() DatapointRepository {
 	if err != nil {
 		panic("Can't open database")
 	}
-	err = db.AutoMigrate(&entities.Datapoint{})
+	err = db.AutoMigrate(&entities.DatapointEntity{})
 	if err != nil {
 		panic("Can't migrate database")
 	}
@@ -85,7 +86,7 @@ func createDatabase() {
 }
 
 func (repository *DatapointRepositoryImpl) Save(datapoint *model.Datapoint) {
-	datapointEntity := entities.Datapoint{
+	datapointEntity := entities.DatapointEntity{
 		Value: datapoint.Value,
 		Date:  datapoint.Date,
 	}
@@ -103,7 +104,7 @@ func (repository *DatapointRepositoryImpl) FindForTime(start, end *time.Time) []
 		end = &endValue
 	}
 
-	var datapointEntities []*entities.Datapoint
+	var datapointEntities []*entities.DatapointEntity
 	repository.DB.Where("date BETWEEN ? AND ?", start, end).Find(&datapointEntities)
 
 	datapoints := make([]*model.Datapoint, len(datapointEntities))

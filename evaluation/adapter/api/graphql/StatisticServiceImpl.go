@@ -1,17 +1,21 @@
 package graphql
 
 import (
+	"evaluation/domain"
 	"evaluation/domain/model"
-	"evaluation/ports/outgoing"
 	"time"
 )
 
 type StatisticServiceImpl struct {
-	DatapointRepository outgoing.DatapointRepository
+	DatapointService domain.DatapointService
+}
+
+func (s *StatisticServiceImpl) AllDatapoints(start, end *time.Time) []*model.Datapoint {
+	return s.DatapointService.GetDatapointsForTime(start, end)
 }
 
 func (s *StatisticServiceImpl) AverageValue(start, end *time.Time) float64 {
-	datapoints := s.DatapointRepository.FindForTime(start, end)
+	datapoints := s.DatapointService.GetDatapointsForTime(start, end)
 	sum := 0.0
 	for _, dp := range datapoints {
 		sum += float64(dp.Value)
@@ -20,7 +24,7 @@ func (s *StatisticServiceImpl) AverageValue(start, end *time.Time) float64 {
 }
 
 func (s *StatisticServiceImpl) MaxDatapoint(start, end *time.Time) *model.Datapoint {
-	datapoints := s.DatapointRepository.FindForTime(start, end)
+	datapoints := s.DatapointService.GetDatapointsForTime(start, end)
 	var max *model.Datapoint
 	for _, dp := range datapoints {
 		if max == nil || dp.Value > max.Value {
@@ -31,7 +35,7 @@ func (s *StatisticServiceImpl) MaxDatapoint(start, end *time.Time) *model.Datapo
 }
 
 func (s *StatisticServiceImpl) MinDatapoint(start, end *time.Time) *model.Datapoint {
-	datapoints := s.DatapointRepository.FindForTime(start, end)
+	datapoints := s.DatapointService.GetDatapointsForTime(start, end)
 	var min *model.Datapoint
 	for _, dp := range datapoints {
 		if min == nil || dp.Value < min.Value {

@@ -5,6 +5,9 @@ import (
 	"evaluation/adapter/gorm"
 	"evaluation/adapter/rabbitmq"
 	"evaluation/application"
+	"evaluation/domain"
+	"evaluation/ports/ingoing"
+	"evaluation/ports/outgoing"
 	"log"
 	"net/http"
 	"os"
@@ -15,13 +18,13 @@ import (
 )
 
 func main() {
-	datapointEvents := &rabbitmq.DatapointEventsImpl{
+	var datapointEvents ingoing.DatapointEvent = &rabbitmq.DatapointEventImpl{
 		Service: rabbitmq.NewServiceImpl(),
 	}
 
-	datapointRepository := gorm.NewDatapointRepositoryImpl()
+	var datapointRepository outgoing.DatapointRepository = gorm.NewDatapointRepositoryImpl()
 
-	datapointService := &application.DatapointServiceImpl{
+	var datapointService domain.DatapointService = &application.DatapointServiceImpl{
 		DatapointRepository: datapointRepository,
 	}
 
@@ -34,9 +37,8 @@ func main() {
 			graphql.Config{
 				Resolvers: &graphql.Resolver{
 					StatisticService: &graphql.StatisticServiceImpl{
-						DatapointRepository: datapointRepository,
+						DatapointService: datapointService,
 					},
-					DatapointRepository: datapointRepository,
 				},
 			},
 		),

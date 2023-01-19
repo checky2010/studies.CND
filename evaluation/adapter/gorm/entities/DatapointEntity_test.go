@@ -9,7 +9,7 @@ import (
 )
 
 func TestDatapoint_ToDatapoint(t *testing.T) {
-	dp := &Datapoint{
+	dp := &DatapointEntity{
 		Model: gorm.Model{
 			ID:        0,
 			CreatedAt: time.Now(),

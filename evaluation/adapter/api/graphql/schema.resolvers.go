@@ -12,7 +12,7 @@ import (
 
 // Datapoints is the resolver for the datapoints field.
 func (r *queryResolver) Datapoints(_ context.Context, start *time.Time, end *time.Time) ([]*dto.Datapoint, error) {
-	datapoints := r.DatapointRepository.FindForTime(start, end)
+	datapoints := r.StatisticService.AllDatapoints(start, end)
 	var datapointDTOs []*dto.Datapoint
 	for _, dp := range datapoints {
 		datapointDTOs = append(datapointDTOs, &dto.Datapoint{

@@ -7,13 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type Datapoint struct {
+type DatapointEntity struct {
 	gorm.Model
 	Value int       `json:"value"`
 	Date  time.Time `json:"date"`
 }
 
-func (entity *Datapoint) ToDatapoint() *model.Datapoint {
+func (entity *DatapointEntity) ToDatapoint() *model.Datapoint {
 	return &model.Datapoint{
 		Value: entity.Value,
 		Date:  entity.Date,
